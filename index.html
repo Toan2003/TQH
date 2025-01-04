@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Dashboard Phân tích các sản phẩm và thương hiệu Điện Thoại</h1>
+      <nav>
+        <ul id="primary-navigation">
+          <li><button onclick="toggleItem('price')">Theo Giá Cả</button></li>
+          <li>
+            <button onclick="toggleItem('rating')">
+              Theo Rating - Đánh Giá
+            </button>
+          </li>
+          <li>
+            <button onclick="toggleItem('favorite')">
+              Theo Lượt Yêu Thích
+            </button>
+          </li>
+          <li>
+            <button onclick="toggleItem('specs')">Theo Cấu Hình</button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="price">
+        <div class="grid-item" style="grid-column: span 2">
+          <h2>Top các thương hiệu có tỉ lệ giảm giá cao nhất</h2>
+          <div class="chart" id="barChart"></div>
+        </div>
+        <div class="grid-item">
+          <h2>Cơ cấu thị trường phân loại theo giá cả</h2>
+          <div class="pie-chart" id="pieChart"></div>
+        </div>
+        <div class="grid-item">
+          <h2>
+            Top các sản phẩm có tỉ lệ giảm giá nhiều nhất của thương hiệu All
+          </h2>
+          <div class="chart" id="horizontalBarChart"></div>
+        </div>
+      </section>
+      <section id="rating">
+        <div class="chart">
+          <h2>Top các thương hiệu nhận được nhiều rating nhất</h2>
+          <svg id="rating_chart_1" width="800" height="400"></svg>
+        </div>
+
+        <div class="chart">
+          <h2>
+            Top 10 sản phẩm nhận được nhiều rating nhất của Thương hiệu: All
+          </h2>
+          <svg id="rating_chart_2" width="800" height="400"></svg>
+        </div>
+
+        <div class="chart">
+          <h2>Top các thương hiệu nhận được nhiều Reviews nhất</h2>
+          <svg id="rating_chart_4" width="800" height="400"></svg>
+        </div>
+
+        <div class="chart">
+          <h2>
+            Top các sản phẩm nhận được nhiều review nhất của thương hiệu All
+          </h2>
+          <svg id="rating_chart_3" width="800" height="400"></svg>
+        </div>
+      </section>
+      <section id="favorite">
+        <div class="grid-item">
+          <h2>Top các thương hiệu nhận được nhiều rating nhất</h2>
+          <svg id="favorite_chart_1" width="800" height="400"></svg>
+        </div>
+        <div class="grid-item">
+          <h2>
+            Top các sản phẩm có tỉ lệ giảm giá nhiều nhất của thương hiệu All
+          </h2>
+          <svg id="favorite_chart_2" width="800" height="400"></svg>
+        </div>
+        <div class="grid-item" style="grid-column: span 2">
+          <h2>Top các thương hiệu có tỉ lệ giảm giá cao nhất</h2>
+          <div class="chart" id="scatter" style="width: 100%"></div>
+        </div>
+      </section>
+      <section id="specs">
+        <div class="chart-container">
+          <h2>
+            Sự phân bổ về dung lượng Ram trong các loại điện thoại trên thị
+            trường
+          </h2>
+          <svg id="ramChart_spec" width="800" height="400"></svg>
+        </div>
+        <div class="chart-container">
+          <h2>
+            Sự phân bổ về dung lượng Storage trong các loại điện thoại trên thị
+            trường
+          </h2>
+          <svg id="storageChart_spec" width="800" height="400"></svg>
+        </div>
+        <div class="chart-container" style="grid-column: span 2">
+          <h2>
+            Sự phân bổ về kích thước màn hình trong các loại điện thoại trên thị
+            trường
+          </h2>
+          <svg id="screenSizeChart_spec" width="1600" height="600"></svg>
+        </div>
+      </section>
+    </main>
+    <script src="index.js"></script>
+    <script src="price.js"></script>
+    <script src="rating.js"></script>
+
+    <script src="specs.js"></script>
+
+    <script src="fav.js"></script>
+  </body>
+</html>
