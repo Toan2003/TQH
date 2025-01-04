@@ -8,6 +8,7 @@ body {
 }
 h1 {
   text-align: center;
+  transform: translateY(55%);
 }
 ul {
   list-style-type: none;
@@ -63,11 +64,28 @@ h2 {
   width: calc(25% - 0.25rem);
 }
 
-#primary-navigation li button {
+#primary-navigation li button, #relation-button {
   width: 100%;
   background-color: black;
   color: white;
   padding: 1rem;
+}
+
+#primary-navigation li button:hover, #relation-button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+#relation-button {
+  padding: 10px;
+  width: 200px;
+}
+
+.relation-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-90%);
 }
 
 /* Price section */

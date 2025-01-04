@@ -58,7 +58,7 @@
   // Function to render bar chart
   function renderBarChart(data) {
     const chart = d3.select("#barChart");
-    const width = 2400; // Kéo dài hết trang
+    const width = 1400; // Kéo dài hết trang
     const height = 400;
     const margin = { top: 20, right: 20, bottom: 50, left: 50 };
 
@@ -119,7 +119,7 @@
   // Function to render pie chart
   function renderPieChart(data) {
     const chart = d3.select("#pieChart");
-    const width = 1200;
+    const width = 400;
     const height = 400;
     const radius = Math.min(width, height) / 2;
 
@@ -130,7 +130,9 @@
       .append("g")
       .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = d3.scaleOrdinal()
+    .domain(data.map((d) => d.category)) 
+    .range(["#4E79A7", "#76B7B2", "#E15759", "#F28E2B"]);
 
     const pie = d3.pie().value((d) => d.value);
 
@@ -173,7 +175,7 @@
   // Function to render horizontal bar chart
   function renderHorizontalBarChart(data) {
     const chart = d3.select("#horizontalBarChart");
-    const width = 1000; // Adjust width if necessary
+    const width = 650; // Adjust width if necessary
     const height = 400;
     const margin = { top: 20, right: 20, bottom: 50, left: 200 };
 

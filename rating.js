@@ -80,6 +80,7 @@
       .sort((a, b) => b.Reviews - a.Reviews)
       .slice(0, 10)
       .map((d) => ({ name: d["Product Name"], reviews: d.Reviews }));
+      console.log(topProductsByReviews)
 
     renderHorizontalBarChart(
       "#rating_chart_3",
@@ -96,8 +97,8 @@
 
 // Render vertical bar chart
 function renderBarChart(selector, data, xKey, yKey, xLabel, yLabel) {
-  const margin = { top: 40, right: 20, bottom: 80, left: 60 };
-  const width = 800 - margin.left - margin.right;
+  const margin = { top: 40, right: 20, bottom: 80, left: 90 };
+  const width = 700 - margin.left - margin.right;
   const height = 350 - margin.top - margin.bottom;
 
   const svg = d3
@@ -132,12 +133,25 @@ function renderBarChart(selector, data, xKey, yKey, xLabel, yLabel) {
     .attr("height", (d) => height - y(d[yKey]))
     .attr("fill", "steelblue");
 
+  // Add values on top of bars
+  svg
+    .selectAll(".label")
+    .data(data)
+    .enter()
+    .append("text")
+    .attr("x", (d) => x(d[xKey]) + x.bandwidth() / 2)
+    .attr("y", (d) => y(d[yKey]) - 5)
+    .attr("text-anchor", "middle")
+    .text((d) => d[yKey].toLocaleString())
+    .style("font-size", "12px")
+    .style("fill", "black");
+
   svg
     .append("g")
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x))
     .selectAll("text")
-    .attr("transform", "rotate(-25)") // Giảm góc xoay để nhãn x-axis hiển thị tốt hơn
+    .attr("transform", "rotate(-25)")
     .style("text-anchor", "middle");
 
   svg.append("g").call(d3.axisLeft(y));
@@ -162,9 +176,9 @@ function renderBarChart(selector, data, xKey, yKey, xLabel, yLabel) {
 
 // Render horizontal bar chart
 function renderHorizontalBarChart(selector, data, yKey, xKey, yLabel, xLabel) {
-  const margin = { top: 40, right: 40, bottom: 80, left: 300 }; // Tăng margin left để đủ không gian nhãn
-  const width = 1200 - margin.left - margin.right; // Tăng chiều rộng
-  const height = 300 - margin.top - margin.bottom; // Tăng chiều cao
+  const margin = { top: 40, right: 40, bottom: 60, left: 200 }; // Adjust left margin for long labels
+  const width = 700 - margin.left - margin.right; // Increase width for better spacing
+  const height = 300 - margin.top - margin.bottom; // Increase height to fit all 10 bars
 
   const svg = d3
     .select(selector)
@@ -182,9 +196,9 @@ function renderHorizontalBarChart(selector, data, yKey, xKey, yLabel, xLabel) {
 
   const y = d3
     .scaleBand()
-    .domain(data.map((d) => d[yKey]))
+    .domain(data.map((d) => truncateText(d[yKey], 25))) // Ensure truncated names
     .range([0, height])
-    .padding(0.4); // Tăng padding giữa các thanh
+    .padding(0.1); // Reduce padding for more compact spacing
 
   svg
     .selectAll(".bar")
@@ -192,27 +206,40 @@ function renderHorizontalBarChart(selector, data, yKey, xKey, yLabel, xLabel) {
     .enter()
     .append("rect")
     .attr("class", "bar")
-    .attr("y", (d) => y(d[yKey]))
+    .attr("y", (d) => y(truncateText(d[yKey], 25))) // Use truncated names
     .attr("x", 0)
     .attr("height", y.bandwidth())
     .attr("width", (d) => x(d[xKey]))
     .attr("fill", "steelblue");
 
+  // Add values to the side of bars
+  svg
+    .selectAll(".label")
+    .data(data)
+    .enter()
+    .append("text")
+    .attr("x", (d) => x(d[xKey]) + 5)
+    .attr("y", (d) => y(truncateText(d[yKey], 25)) + y.bandwidth() / 2)
+    .attr("dy", ".35em")
+    .text((d) => d[xKey].toLocaleString())
+    .style("font-size", "12px")
+    .style("fill", "black");
+
   svg
     .append("g")
     .call(d3.axisLeft(y).tickSizeOuter(0))
     .selectAll("text")
-    .style("font-size", "12px"); // Giảm kích thước font nếu nhãn quá dài
+    .style("font-size", "12px");
 
   svg
     .append("g")
     .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).ticks(6)); // Adjust ticks for better readability
 
   svg
     .append("text")
     .attr("x", width / 2)
-    .attr("y", height + margin.bottom - 20) // Dịch xuống để nhãn không chồng
+    .attr("y", height + margin.bottom - 20)
     .attr("text-anchor", "middle")
     .style("font-size", "14px")
     .text(xLabel);
@@ -225,4 +252,9 @@ function renderHorizontalBarChart(selector, data, yKey, xKey, yLabel, xLabel) {
     .attr("text-anchor", "middle")
     .style("font-size", "14px")
     .text(yLabel);
+}
+
+// Utility function to truncate text
+function truncateText(text, maxLength) {
+  return text.length > maxLength ? text.slice(0, maxLength - 3) + "..." : text;
 }
